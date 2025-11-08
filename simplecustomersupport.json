@@ -1,0 +1,177 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "contact us",
+        "formDescription": "fill the details ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "name",
+              "placeholder": "enter your name"
+            },
+            {
+              "fieldLabel": "what is your problem",
+              "placeholder": "describe your problem"
+            },
+            {
+              "fieldLabel": "email",
+              "fieldType": "email",
+              "placeholder": "please enter your email"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d517fbcf-4f32-4363-a4d9-d832f6801d62",
+      "name": "On form submission",
+      "webhookId": "8bbb4f96-ffc3-4659-8630-4cf1cf87c392"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1LM42yU-mpwUnpuOcnszN-J5bO30FREzS12lsXp6Whzk",
+          "mode": "list",
+          "cachedResultName": "customersupportexample",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LM42yU-mpwUnpuOcnszN-J5bO30FREzS12lsXp6Whzk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LM42yU-mpwUnpuOcnszN-J5bO30FREzS12lsXp6Whzk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $json.name }}",
+            "problem": "={{ $json['what is your problem'] }}",
+            "email": "={{ $json.email }}"
+          },
+          "matchingColumns": [
+            "name"
+          ],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "problem",
+              "displayName": "problem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d40271b6-683a-4c15-9fcd-ab599a837932",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "oCnXJNnIGlqVEaEo",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "=Issue resolvement",
+        "emailType": "text",
+        "message": "=Hello  {{ $json.name }}, we received your response about your problem regarding \"{{ $json.problem }}\"  we are very sorry about the issue and this issue will b sorted by the end of the day  we are very sorry for inconvience",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "a0ab92a3-ad87-49a7-886b-d09ed96a683a",
+      "name": "Send a message",
+      "webhookId": "8012d531-d0ba-4ce0-984c-3d8a8b20e427",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xNrLggXGZK2Hp0rl",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "55825243-6c07-4332-974d-d1e5bbf29749",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "29093041b8b04bbe8847e3a2dc13ae6acdda6e9f7b4d6f923f84639bab9de535"
+  },
+  "id": "z6igsuFugyx77K3B",
+  "tags": []
+}
